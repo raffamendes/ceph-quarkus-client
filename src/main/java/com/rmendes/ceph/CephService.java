@@ -4,11 +4,9 @@ package com.rmendes.ceph;
 
 import java.io.FileNotFoundException;
 
+import javax.inject.Inject;
+
 import org.apache.commons.codec.binary.Base64;
-import org.javaswift.joss.client.factory.AccountConfig;
-import org.javaswift.joss.client.factory.AccountFactory;
-import org.javaswift.joss.client.factory.AuthenticationMethod;
-import org.javaswift.joss.model.Account;
 import org.javaswift.joss.model.Container;
 import org.javaswift.joss.model.StoredObject;
 import org.springframework.stereotype.Service;
@@ -16,14 +14,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class CephService {
 
-	private static final String user = "java-app:app";
-	private static final String password = "xlfyMkYGo2qxZddzQdcG1tWqAssqANX86HYdAlhE";
-	private static final String authUrl = "http://10.10.95.25:8080/auth/";
+//	private static final String user = "api-ceph:swift-user";
+//	private static final String password = "PYtzpN71TlPZHj7iMqiexpwCo0NNbbpxkiY5AdBt";
+//	private static final String authUrl = "http://rgws-0.rmendescephcluster.lab.pnq2.cee.redhat.com:8080/auth/";
 	
+	@Inject
+	CephAccount accountObject;
 	
 	public Container CreateOrGetContainer(String containerName) { 
-		Account ac = configAccount();
-		Container container = ac.getContainer(containerName);
+		Container container = accountObject.getAccount().getContainer(containerName);
 		if(container.exists()) {
 			container.makePublic();
 			return container;
@@ -57,15 +56,15 @@ public class CephService {
 		return Base64.encodeBase64String(object.downloadObject());
 	}
 	
-	private Account configAccount() {
-		AccountConfig cfg = new AccountConfig();
-		cfg.setUsername(user);
-		cfg.setPassword(password);
-		cfg.setAuthUrl(authUrl);
-		cfg.setAuthenticationMethod(AuthenticationMethod.BASIC);
-		return new AccountFactory(cfg).createAccount();
-	}
-	
+//	private Account configAccount() {
+//		AccountConfig cfg = new AccountConfig();
+//		cfg.setUsername(user);
+//		cfg.setPassword(password);
+//		cfg.setAuthUrl(authUrl);
+//		cfg.setAuthenticationMethod(AuthenticationMethod.BASIC);
+//		return new AccountFactory(cfg).createAccount();
+//	}
+//	
 	
 	
 }

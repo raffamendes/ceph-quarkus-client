@@ -11,11 +11,11 @@ public class RequestObject {
 	@PartType(MediaType.TEXT_PLAIN)
 	public String fileName;
 	
-	@FormParam("fileName")
+	@FormParam("department")
 	@PartType(MediaType.TEXT_PLAIN)
 	public String department;
 	
-	@FormParam("fileName")
+	@FormParam("base64File")
 	@PartType(MediaType.TEXT_PLAIN)
 	public String base64EncodedFile;
 	

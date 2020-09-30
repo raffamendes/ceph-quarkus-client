@@ -14,6 +14,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.eclipse.microprofile.metrics.MetricUnits;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import com.rmendes.ceph.CephService;
@@ -25,11 +27,19 @@ public class ObjectResource {
 	
 	@Inject
 	CephService cephService;
+	
+	@GET
+	@Path("/teste")
+	public String teste() {
+		System.out.println("Teste");
+		return "teste";
+	}
 
     @PUT
     @Path("/upload")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
+    @Timed(name = "uploadTimerBase64", description = "A measure of how long it takes to upload a file to ceph.", unit = MetricUnits.MILLISECONDS)
     public String upload(RequestObject rq) {
     	return cephService.uploadObject(rq.fileName, rq.base64EncodedFile, "teste");
     }
@@ -49,8 +59,9 @@ public class ObjectResource {
     
     @POST
     @Path("/upload/binary")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Timed(name = "uploadTimerBinary", description = "A measure of how long it takes to upload a file to ceph.", unit = MetricUnits.SECONDS)
     public String uploadBinary(@MultipartForm RequestObject rq) {
-    	
     	return cephService.uploadObject(rq.fileName, rq.file, "teste");
     }
     
