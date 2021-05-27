@@ -5,4 +5,4 @@ This is intented to serve concurrent/multiple requests at a time without degradi
 
 Security will be added using Keycloak só we can store the Roles as metadata in the objects.
 
-Testing.
+Testing..
